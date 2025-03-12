@@ -23,7 +23,7 @@ export default function MangaPage() {
   const [getData, setData] = useState<Data | null>(null);
 
   useEffect(() => {
-    fetch(`https://laravel-api-manga-scraper.vercel.app/api/api/detail/${slug}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/detail/${slug}`)
       .then((res) => res.json())
       .then((data) => {
         console.log("API Response:", data);

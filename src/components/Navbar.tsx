@@ -9,17 +9,14 @@ export default function Navbar() {
   return (
     <nav className="bg-yellow-300 p-4 text-white text-lg">
       <div className="container mx-auto flex justify-between items-center">
-        {/* ✅ Logo */}
         <h1 className="text-xl font-bold">Cihuy Komik</h1>
 
-        {/* ✅ Menu untuk layar besar */}
         <div className="hidden md:flex gap-4">
           <Link href="/">Home</Link>
           <Link href="/">Popular</Link>
           <Link href="/">Daftar Komik</Link>
         </div>
 
-        {/* ✅ Search Input (responsif) */}
         <div className="relative w-32 sm:w-40 md:w-60">
           <input
             type="text"
@@ -29,13 +26,11 @@ export default function Navbar() {
           <Search className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500" size={16} />
         </div>
 
-        {/* ✅ Hamburger Menu (mobile) */}
         <button className="md:hidden ml-4" onClick={() => setMenuOpen(!isMenuOpen)}>
           <Menu size={24} />
         </button>
       </div>
 
-      {/* ✅ Dropdown Menu untuk Mobile */}
       {isMenuOpen && (
         <div className="md:hidden mt-3 flex flex-col items-center bg-yellow-400 p-3 rounded-md shadow-md">
           <Link href="/" className="py-2 w-full text-center">Home</Link>

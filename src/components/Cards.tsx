@@ -19,7 +19,7 @@ export default function Cards() {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    fetch(`https://laravel-api-manga-scraper.vercel.app/api/api/terbaru/${currentPage}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/terbaru/${currentPage}`)
       .then((res) => res.json())
       .then((data) => {
         console.log("API Response:", data);
@@ -36,7 +36,6 @@ export default function Cards() {
 
   return (
     <ComponentCard title="Terbaru">
-      {/* ✅ Grid Responsif */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {getData.length > 0 ? (
           getData.map((card) => (
@@ -47,7 +46,6 @@ export default function Cards() {
         )}
       </div>
 
-      {/* ✅ Pagination Responsif */}
       <div className="flex flex-wrap justify-center items-center gap-2 mt-4">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
