@@ -3,30 +3,44 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ComponentCard from "@/components/common/ComponentCard";
 import Image from "next/image";
+import Link from "next/link";
+import StarRating from "@/components/rating";
+import RelatedCard from "@/components/cards/RelatedCard";
 type Chapter = {
   url: string;
   chapter: string;
   update: string;
 };
+type MiripData = {
+  url: string;
+  img: string;
+  title: string;
+  subtitle: string;
+  type: string;
+  jenis: string;
+}[];
 type Data = {
   judul: string;
   chapter: Chapter[];
   short_sinopsis: string;
   status: string;
   img: string;
-  tema: string;
+  jenis: string;
+  mirip: MiripData;
+  pengarang: string;
+  ilustrator: string;
+  ratting:string;
   genre: string[];
 };
 
 export default function MangaPage() {
   const { slug } = useParams();
   const [getData, setData] = useState<Data | null>(null);
-
+  const rating = parseInt(getData?.ratting || "0", 10);
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/detail/${slug}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log("API Response:", data);
         if (data.data) {
           setData(data.data);
         } else {
@@ -37,47 +51,84 @@ export default function MangaPage() {
   }, [slug]);
 
   return (
-        <>
+    <>
       {getData ? (
-    <ComponentCard title={getData.judul} desc={getData.short_sinopsis}>
-        {getData.img && (
-            <div className="flex">
-                <Image 
-                    src={getData.img} 
-                    width={200} 
-                    height={300} 
-                    alt={getData.judul || "Gambar Manga"} 
-                    unoptimized 
-                />
-                <div className="mx-4">
-                    <h1>Status: {getData.status}</h1>
-                    <h1>Jenis komik: {getData.status}</h1>
-                    <h1>Pengarang: {getData.status}</h1>
-                    <h1>Ilustrator: {getData.status}</h1>
-                    <h1>Tema: {getData.tema}</h1>
-                    <div className="flex flex-row gap-2 items-center">
-                        Genre :
-                        {/* {getData.genre.map((genre, index) => (
-                        <Link key={index} href={genre} className="bg-slate-500 p-1 rounded-xl">{genre}</Link>
-                        ))} */}
-                    </div>
+        <ComponentCard title={getData.judul} desc={getData.short_sinopsis}>
+          {getData.img && (
+            <div className="flex flex-col md:flex-row gap-4">
+              <Image
+                src={getData.img}
+                width={200}
+                height={300}
+                alt={getData.judul || "Gambar Manga"}
+                unoptimized
+                className="rounded-lg shadow-md mx-auto md:mx-0"
+              />
+              <div className="flex flex-col gap-2 text-sm md:text-base">
+                <p><strong>Status:</strong> {getData.status}</p>
+                <p><strong>Jenis Komik:</strong> {getData.jenis}</p>
+                <p><strong>Pengarang:</strong> {getData.pengarang}</p>
+                <p><strong>Ilustrator:</strong> {getData.ilustrator}</p>
+                <StarRating rating={rating} realRatting={getData.ratting}/>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {getData.genre.map((genre, index) => (
+                    <Link
+                      key={index}
+                      href={genre}
+                      className="bg-slate-500 text-white px-3 py-1 rounded-full text-xs"
+                    >
+                      {genre}
+                    </Link>
+                  ))}
                 </div>
+              </div>
             </div>
-        )}
-          <h2 className="mt-4 text-lg font-semibold">Chapters:</h2>
-          <ul className="mt-2 space-y-2">
-            {getData.chapter.map((ch, index) => (
-              <li key={index} className="border p-2 rounded-md">
-                <a href={`/${ch.url}`} className="text-blue-500 hover:underline">
-                  {ch.chapter} - {ch.update}
-                </a>
-              </li>
-            ))}
-          </ul>
-    </ComponentCard>
+          )}
+
+          <ComponentCard title="Chapters" className="mt-5 h-[35rem] lg:h-[34rem] flex flex-col">
+            <div className="grid grid-cols-2 gap-4 mb-2">
+              <Link
+                href={`/${getData.chapter[getData.chapter.length - 1].url}`}
+                className="flex flex-col items-center w-full p-3 text-lg rounded-md shadow-sm hover:shadow-md transition hover:bg-gray-700/40 bg-yellow-500 text-gray-200"
+              >
+                <span>Last Chapter</span>
+                <span className="text-sm">{getData.chapter[getData.chapter.length - 1].chapter}</span>
+              </Link>
+              <Link
+                href={`/${getData.chapter[0].url}`}
+                className="flex flex-col w-full p-3 items-center text-lg rounded-md shadow-sm hover:shadow-md transition hover:bg-gray-700/40 bg-yellow-500 text-gray-200"
+              >
+                <span>First Chapter</span>
+                <span className="text-sm">{getData.chapter[0].chapter}</span>
+              </Link>
+            </div>
+
+            <div className="overflow-y-auto max-h-[22rem] p-2 ">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                {getData.chapter.map((ch, index) => (
+                  <Link
+                    key={index}
+                    href={`/${ch.url}`}
+                    className="border-2 border-white p-2 rounded-md flex flex-col shadow-sm hover:shadow-md transition hover:bg-gray-700/40 text-yellow-500"
+                  >
+                    <span className="font-semibold">{ch.chapter}</span>
+                    <span className="text-xs text-gray-500">{ch.update}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </ComponentCard>
+          <RelatedCard
+          card={getData.mirip.map((item) => ({
+            link: `/${item.url}`,
+            title: item.title,
+            img: item.img,
+          }))}
+        />
+        </ComponentCard>
       ) : (
-          <p>Loading...</p>
-        )}
-        </>
+        <p className="text-center text-gray-500">Loading...</p>
+      )}
+    </>
   );
 }

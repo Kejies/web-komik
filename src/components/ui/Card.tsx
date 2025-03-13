@@ -9,7 +9,7 @@ interface CardProps {
   }
 export default function Card({link, title, img, chapter, last_update}:CardProps){
     return(
-      <Link href={`/komik/${link}`} className="relative flex flex-col shadow shadow-slate-600 border border-slate-600 rounded-lg w-[9rem] overflow-hidden">
+      <Link href={`/komik/${link}`} className="relative flex flex-col shadow shadow-slate-600 border border-slate-600 rounded-lg w-[9rem] overflow-hidden hover:bg-slate-200/10 transition-all">
       <div className="relative w-full h-48 overflow-hidden text-white rounded-md">
         <Image
           src={img}
@@ -25,7 +25,7 @@ export default function Card({link, title, img, chapter, last_update}:CardProps)
           {title}
         
         </h6>
-        <p className="flex justify-between  text-xs font-light mt-auto">
+        <p className="flex justify-between text-xs font-light mt-auto">
           <span className="text-gray-300">{chapter}</span>
           <span className="text-gray-400">{last_update}</span>
         </p>

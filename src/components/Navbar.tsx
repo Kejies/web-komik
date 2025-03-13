@@ -12,9 +12,8 @@ export default function Navbar() {
         <h1 className="text-xl font-bold">Cihuy Komik</h1>
 
         <div className="hidden md:flex gap-4">
-          <Link href="/">Home</Link>
-          <Link href="/">Popular</Link>
-          <Link href="/">Daftar Komik</Link>
+          <Link href="/" className="hover:translate-0.5 hover:text-gray-100 transition-all">Home</Link>
+          <Link href="/" className="hover:translate-0.5 hover:text-gray-100 transition-all">Daftar Komik</Link>
         </div>
 
         <div className="relative w-32 sm:w-40 md:w-60">

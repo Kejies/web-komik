@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import Card from "./ui/Card";
-import ComponentCard from "./common/ComponentCard";
+import Card from "../ui/Card";
+import ComponentCard from "../common/ComponentCard";
 
 type CardType = {
   link: string;
@@ -35,7 +35,7 @@ export default function Cards() {
   }, [currentPage]);
 
   return (
-    <ComponentCard title="Terbaru">
+    <ComponentCard title="Terbaru" className="mt-2">
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {getData.length > 0 ? (
           getData.map((card) => (
