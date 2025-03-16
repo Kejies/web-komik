@@ -3,9 +3,9 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ComponentCard from "@/components/common/ComponentCard";
 import { ArrowUp, Grip } from "lucide-react";
-
 import Image from "next/image";
 import Link from "next/link";
+
 type Data = {
   title: string;
   content: string[];
@@ -15,15 +15,19 @@ type Data = {
   genre: string[];
 };
 
-
 export default function MangaPage() {
   const params = useParams();
   const router = useRouter();
   const slug = Array.isArray(params.slug) ? params.slug.join("-") : params.slug;
+
   const [getData, setData] = useState<Data | null>(null);
+  const [isLoading, setIsLoading] = useState(true); 
   const [showButton, setShowButton] = useState(false);
+
   useEffect(() => {
     if (!slug) return;
+    
+    setIsLoading(true); 
 
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/content/${slug}`)
       .then((res) => res.json())
@@ -34,22 +38,19 @@ export default function MangaPage() {
           console.error("Unexpected API structure:", data);
         }
       })
-      .catch((err) => console.error("Fetch error:", err));
+      .catch((err) => console.error("Fetch error:", err))
+      .finally(() => setIsLoading(false)); 
   }, [slug]);
+
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 300) {
-        setShowButton(true);
-      } else {
-        setShowButton(false);
-      }
+      setShowButton(window.scrollY > 300);
     };
 
     window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
   const handlePrevious = () => {
     if (getData?.prev_chapter) {
       router.push(`/${getData.prev_chapter.replace("/", "")}`);
@@ -61,42 +62,49 @@ export default function MangaPage() {
       router.push(`/${getData.next_chapter.replace("/", "")}`);
     }
   };
-  const scrollToTop = () => {
-    let scrollPosition = window.scrollY;
-    const scrollStep = scrollPosition / 50;
 
-    const smoothScroll = () => {
-      if (scrollPosition > 0) {
-        scrollPosition -= scrollStep;
-        window.scrollTo(0, scrollPosition);
-        requestAnimationFrame(smoothScroll);
-      }
-    };
-    requestAnimationFrame(smoothScroll);
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+        <div className="animate-spin rounded-full h-16 w-16 border-4 border-gray-300 border-t-blue-500"></div>
+      </div>
+    );
+  }
+
   return (
     <>
-      {getData ? (
+      {getData && (
         <ComponentCard title={getData.title}>
-
+          {/* Navigasi Chapter */}
           <div className="flex flex-wrap justify-center items-center gap-2 mb-4">
             <button
               onClick={handlePrevious}
               disabled={!getData.prev_chapter}
-              className="flex px-4 py-2 bg-gray-700 text-white rounded disabled:text-gray-500 hover:bg-gray-800"
+              className="px-4 py-2 bg-gray-700 text-white rounded disabled:text-gray-500 hover:bg-gray-800"
             >
-                      « Chapter Sebelumnya 
+              « Chapter Sebelumnya
             </button>
-            <Link href={`/komik/${getData.daftar_chapter}`} className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800 flex gap-0.5 items-center"> <Grip size={24}/>Daftar Chapter</Link>
+            <Link
+              href={`/komik/${getData.daftar_chapter}`}
+              className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800 flex gap-0.5 items-center"
+            >
+              <Grip size={24} />
+              Daftar Chapter
+            </Link>
             <button
               onClick={handleNext}
               disabled={!getData.next_chapter}
-              className="flex px-4 py-2 bg-gray-700 text-white rounded disabled:text-gray-500 hover:bg-gray-800"
+              className="px-4 py-2 bg-gray-700 text-white rounded disabled:text-gray-500 hover:bg-gray-800"
             >
               Chapter Selanjutnya »
             </button>
           </div>
 
+          {/* Gambar Manga */}
           <div className="flex flex-col items-center">
             {getData.content.map((content, index) => (
               <Image
@@ -106,7 +114,7 @@ export default function MangaPage() {
                 height={600}
                 alt={getData.title}
                 quality={100}
-                priority={true} 
+                priority={true}
                 className="w-full h-auto md:w-[50rem]"
               />
             ))}
@@ -118,9 +126,15 @@ export default function MangaPage() {
               disabled={!getData.prev_chapter}
               className="px-4 py-2 bg-gray-700 text-white rounded disabled:text-gray-500 hover:bg-gray-800"
             >
-               « Chapter Sebelumnya 
+              « Chapter Sebelumnya
             </button>
-            <Link href={`/komik/${getData.daftar_chapter}`} className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800 flex gap-0.5 items-center"> <Grip size={24}/>Daftar Chapter</Link>
+            <Link
+              href={`/komik/${getData.daftar_chapter}`}
+              className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800 flex gap-0.5 items-center"
+            >
+              <Grip size={24} />
+              Daftar Chapter
+            </Link>
             <button
               onClick={handleNext}
               disabled={!getData.next_chapter}
@@ -128,6 +142,8 @@ export default function MangaPage() {
             >
               Chapter Selanjutnya »
             </button>
+          </div>
+
           {showButton && (
             <button
               onClick={scrollToTop}
@@ -136,11 +152,7 @@ export default function MangaPage() {
               <ArrowUp size={24} />
             </button>
           )}
-                  </div>
-          
         </ComponentCard>
-      ) : (
-        <p>Loading...</p>
       )}
     </>
   );
