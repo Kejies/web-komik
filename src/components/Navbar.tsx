@@ -9,7 +9,7 @@ export default function Navbar() {
   return (
     <nav className="bg-yellow-300 p-4 text-white text-lg">
       <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-xl font-bold">Cihuy Komik</h1>
+        <Link href="/" className="text-xl font-bold">Cihuy Komik</Link>
 
         <div className="hidden md:flex gap-4">
           <Link href="/" className="hover:translate-0.5 hover:text-gray-100 transition-all">Home</Link>
