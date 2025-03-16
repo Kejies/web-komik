@@ -1,21 +1,21 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState, useMemo } from "react";
+import { Suspense, useEffect, useState, useMemo } from "react";
 import Card from "@/components/ui/Card";
 import ComponentCard from "@/components/common/ComponentCard";
 
 type CardData = {
-    url: string;
-    title: string;
-    chapter: string;
-    image: string;
-    last_update: string;
-}
+  url: string;
+  title: string;
+  chapter: string;
+  image: string;
+  last_update: string;
+};
 
-export default function SearchPage() {
+function SearchResults() {
   const searchParams = useSearchParams();
   const query = searchParams.get("s") || "";
-  
+
   const [results, setResults] = useState<CardData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -23,7 +23,7 @@ export default function SearchPage() {
 
   useEffect(() => {
     if (!validQuery) {
-      setResults([]); 
+      setResults([]);
       setIsLoading(false);
       return;
     }
@@ -43,7 +43,7 @@ export default function SearchPage() {
         console.error("Fetch error:", err);
         setResults([]);
       })
-      .finally(() => setIsLoading(false)); 
+      .finally(() => setIsLoading(false));
   }, [validQuery]);
 
   return (
@@ -71,5 +71,13 @@ export default function SearchPage() {
         )}
       </div>
     </ComponentCard>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center h-40">Loading...</div>}>
+      <SearchResults />
+    </Suspense>
   );
 }
