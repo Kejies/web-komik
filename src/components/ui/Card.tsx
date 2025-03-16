@@ -5,7 +5,7 @@ interface CardProps {
     title: string;
     img:string;
     chapter: string;
-    last_update: string;
+    last_update?: string;
   }
 export default function Card({link, title, img, chapter, last_update}:CardProps){
     return(

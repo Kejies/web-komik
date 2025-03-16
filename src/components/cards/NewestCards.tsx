@@ -13,20 +13,20 @@ type CardType = {
   img: string;
 };
 
-export default function Cards() {
+export default function NewestCards() {
   const [getData, setData] = useState<CardType[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/terbaru/${currentPage}`)
-      .then((res) => res.json())
+    .then((res) => res.json())
       .then((data) => {
         console.log("API Response:", data);
 
-        if (data.data.data && Array.isArray(data.data.data)) {
-          setData(data.data.data);
-          setTotalPages(data.data.total_page || 1);
+        if (data.data && Array.isArray(data.data)) {
+          setData(data.data);
+          setTotalPages(data.total_pages)
         } else {
           console.error("Unexpected API structure:", data);
         }

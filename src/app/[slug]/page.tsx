@@ -8,10 +8,10 @@ import Image from "next/image";
 import Link from "next/link";
 type Data = {
   title: string;
-  list: string[];
-  back_chapter: string;
+  content: string[];
+  prev_chapter: string;
+  daftar_chapter: string;
   next_chapter: string;
-  tema: string;
   genre: string[];
 };
 
@@ -22,15 +22,10 @@ export default function MangaPage() {
   const slug = Array.isArray(params.slug) ? params.slug.join("-") : params.slug;
   const [getData, setData] = useState<Data | null>(null);
   const [showButton, setShowButton] = useState(false);
-  const title = 
-  getData?.back_chapter === "" 
-    ? (getData?.next_chapter === "" ? "Default Title" : getData?.next_chapter) 
-    : getData?.back_chapter || "";
-  const slicedTitle = title.split("-").slice(0, -2).join("-");
   useEffect(() => {
     if (!slug) return;
 
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/baca/${slug}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/content/${slug}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.data) {
@@ -56,8 +51,8 @@ export default function MangaPage() {
     };
   }, []);
   const handlePrevious = () => {
-    if (getData?.back_chapter) {
-      router.push(`/${getData.back_chapter.replace("/", "")}`);
+    if (getData?.prev_chapter) {
+      router.push(`/${getData.prev_chapter.replace("/", "")}`);
     }
   };
 
@@ -87,12 +82,12 @@ export default function MangaPage() {
           <div className="flex flex-wrap justify-center items-center gap-2 mb-4">
             <button
               onClick={handlePrevious}
-              disabled={!getData.back_chapter}
+              disabled={!getData.prev_chapter}
               className="flex px-4 py-2 bg-gray-700 text-white rounded disabled:text-gray-500 hover:bg-gray-800"
             >
                       « Chapter Sebelumnya 
             </button>
-            <Link href={`/komik/${slicedTitle}`} className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800 flex gap-0.5 items-center"> <Grip size={24}/>Daftar Chapter</Link>
+            <Link href={`/komik/${getData.daftar_chapter}`} className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800 flex gap-0.5 items-center"> <Grip size={24}/>Daftar Chapter</Link>
             <button
               onClick={handleNext}
               disabled={!getData.next_chapter}
@@ -103,14 +98,16 @@ export default function MangaPage() {
           </div>
 
           <div className="flex flex-col items-center">
-            {getData.list.map((list, index) => (
+            {getData.content.map((content, index) => (
               <Image
                 key={index}
-                src={list}
-                width={500}
-                height={500}
+                src={content}
+                width={800}
+                height={600}
                 alt={getData.title}
-                className="w-full md:w-[50rem]"
+                quality={100}
+                priority={true} 
+                className="w-full h-auto md:w-[50rem]"
               />
             ))}
           </div>
@@ -118,12 +115,12 @@ export default function MangaPage() {
           <div className="flex flex-wrap justify-center items-center gap-2 mt-4">
             <button
               onClick={handlePrevious}
-              disabled={!getData.back_chapter}
+              disabled={!getData.prev_chapter}
               className="px-4 py-2 bg-gray-700 text-white rounded disabled:text-gray-500 hover:bg-gray-800"
             >
                « Chapter Sebelumnya 
             </button>
-            <Link href={`/komik/${slicedTitle}`} className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800 flex gap-0.5 items-center"> <Grip size={24}/>Daftar Chapter</Link>
+            <Link href={`/komik/${getData.daftar_chapter}`} className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800 flex gap-0.5 items-center"> <Grip size={24}/>Daftar Chapter</Link>
             <button
               onClick={handleNext}
               disabled={!getData.next_chapter}

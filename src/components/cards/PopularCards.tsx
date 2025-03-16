@@ -14,11 +14,11 @@ type CardType = {
 };
 
 export default function PopularCards() {
-  const [getData, setData] = useState<CardType[]>([]);
-
+  const [getDataCard, setData] = useState<CardType[]>([]);
+  console.log(getDataCard)
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/popular`)
-      .then((res) => res.json())
+    .then((res) => res.json())
       .then((data) => {
         console.log("API Response:", data);
 
@@ -35,8 +35,8 @@ export default function PopularCards() {
     <ComponentCard title="Popular" className="mt-2">
 
 <div className="flex gap-2 overflow-x-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-neutral-900 [&::-webkit-scrollbar-thumb]:bg-yellow-500 p-2 whitespace-nowrap snap-x snap-mandatory scrollbar-hide flex-nowrap">
-  {getData.length > 0 ? (
-    getData.map((card) => (
+  {getDataCard.length > 0 ? (
+    getDataCard.map((card) => (
       <div key={card.link} className="snap-start shrink-0 w-[70%] sm:w-[50%] md:w-[40%] lg:w-auto">
         <Card
           title={card.title}
