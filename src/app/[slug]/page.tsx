@@ -3,7 +3,6 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ComponentCard from "@/components/common/ComponentCard";
 import { ArrowUp, Grip } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 type Data = {
@@ -104,19 +103,19 @@ export default function MangaPage() {
             </button>
           </div>
 
-          {/* Gambar Manga */}
+
           <div className="flex flex-col items-center">
             {getData.content.map((content, index) => (
-              <Image
+              <img
                 key={index}
-                src={content}
-                width={800}
-                height={600}
+                src={content.replace('.jpg', '.webp')} 
+                width="800"
+                height="600"
                 alt={getData.title}
-                quality={100}
-                priority={true}
+                loading="eager" 
                 className="w-full h-auto md:w-[50rem]"
               />
+
             ))}
           </div>
 
