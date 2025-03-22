@@ -73,7 +73,6 @@ export default function MangaPage() {
       </div>
     );
   }
-
   return (
     <>
       {getData && (
@@ -106,16 +105,16 @@ export default function MangaPage() {
 
           <div className="flex flex-col items-center">
             {getData.content.map((content, index) => (
+              // eslint-disable-next-line @next/next/no-img-element
               <img
                 key={index}
-                src={content.replace('.jpg', '.webp')} 
+                src={content}
                 width="800"
                 height="600"
                 alt={getData.title}
                 loading="eager" 
                 className="w-full h-auto md:w-[50rem]"
               />
-
             ))}
           </div>
 
