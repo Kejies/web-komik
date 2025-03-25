@@ -1,8 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ComponentCard from "@/components/common/ComponentCard";
-import Image from "next/image";
 import Link from "next/link";
 import StarRating from "@/components/rating";
 import RelatedCard from "@/components/cards/RelatedCard";
@@ -78,13 +78,11 @@ export default function MangaPage() {
         <ComponentCard title={getData.title} desc={getData.short_sinopsis}>
           {getData.img && (
             <div className="flex flex-col md:flex-row gap-4">
-              <Image
+              <img
                 src={getData.img}
                 width={200}
                 height={300}
                 alt={getData.title || "Gambar Komik"}
-                quality={100}
-                priority={true} 
                 className="rounded-lg w-auto h-auto shadow-md mx-auto md:mx-0"
               />
               <div className="flex flex-col gap-2 text-sm md:text-lg text-gray-200">
