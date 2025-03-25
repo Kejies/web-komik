@@ -1,10 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ComponentCard from "@/components/common/ComponentCard";
 import { ArrowUp, Grip } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
 
 type Data = {
   title: string;
@@ -106,14 +106,12 @@ export default function MangaPage() {
 
           <div className="flex flex-col items-center">
             {getData.content.map((content, index) => (
-              <Image
+              <img
                 key={index}
                 src={content}
                 width={800}
                 height={600}
                 alt={getData.title}
-                quality={100}
-                priority={true}
                 className="w-full h-auto md:w-[50rem]"
               />
             ))}
