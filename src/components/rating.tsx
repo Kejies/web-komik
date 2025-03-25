@@ -6,7 +6,7 @@ type RatingProps = {
 };
 
 export default function StarRating({ rating, realRatting }: RatingProps) {
-  const maxStars = 10;
+  const maxStars = 5;
   const scaledRating = (rating / 10) * maxStars;
   const fullStars = Math.floor(scaledRating); 
   const hasHalfStar = scaledRating % 1 !== 0;

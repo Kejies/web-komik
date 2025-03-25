@@ -21,7 +21,6 @@ export default function PopularCards() {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/popular`)
       .then((res) => res.json())
       .then((data) => {
-        console.log("API Response:", data);
         if (data.data && Array.isArray(data.data)) {
           setData(data.data);
         } else {

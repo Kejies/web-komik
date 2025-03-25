@@ -20,6 +20,7 @@ export default function Navbar() {
 
         <div className="hidden md:flex gap-4">
           <Link href="/" className="hover:translate-0.5 hover:text-gray-100 transition-all">Home</Link>
+          <Link href="/bookmark" className="hover:translate-0.5 hover:text-gray-100 transition-all">Bookmark</Link>
           {/* <Link href="/" className="hover:translate-0.5 hover:text-gray-100 transition-all">Daftar Komik</Link> */}
         </div>
 
@@ -45,6 +46,7 @@ export default function Navbar() {
       {isMenuOpen && (
         <div className="md:hidden mt-3 flex flex-col items-center bg-yellow-400 p-3 rounded-md shadow-md">
           <Link href="/" className="py-2 w-full text-center">Home</Link>
+          <Link href="/bookmark" className="py-2 w-full text-center">Bookmark</Link>
           {/* <Link href="/" className="py-2 w-full text-center">Daftar Komik</Link> */}
         </div>
       )}

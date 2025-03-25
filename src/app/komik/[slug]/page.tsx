@@ -47,6 +47,8 @@ export default function MangaPage() {
   const { slug } = useParams();
   const [getData, setData] = useState<Data | null>(null);
   const rating = parseInt(getData?.ratting || "0", 10);
+  const [clickedLinks, setClickedLinks] = useState<string[]>([]);
+
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/detail/${slug}`)
       .then((res) => res.json())
@@ -58,7 +60,17 @@ export default function MangaPage() {
         }
       })
       .catch((err) => console.error("Fetch error:", err));
+    const storedLinks = JSON.parse(localStorage.getItem("clickedLinks") || "[]");
+    setClickedLinks(storedLinks);
   }, [slug]);
+
+  const handleClick = (href: string) => {
+    if (!clickedLinks.includes(href)) {
+      const newClickedLinks = [...clickedLinks, href];
+      setClickedLinks(newClickedLinks);
+      localStorage.setItem("clickedLinks", JSON.stringify(newClickedLinks));
+    }
+  };
 
   return (
     <>
@@ -75,7 +87,7 @@ export default function MangaPage() {
                 priority={true} 
                 className="rounded-lg w-auto h-auto shadow-md mx-auto md:mx-0"
               />
-              <div className="flex flex-col gap-2 text-sm md:text-base">
+              <div className="flex flex-col gap-2 text-sm md:text-lg text-gray-200">
                 <p><strong>Status:</strong> {getData.status}</p>
                 <p><strong>Jenis Komik:</strong> {getData.type}</p>
                 <p><strong>Pengarang:</strong> {getData.author}</p>
@@ -85,7 +97,7 @@ export default function MangaPage() {
                   {getData.genre.map((genre, index) => (
                     <Link
                       key={index}
-                      href={genre}
+                      href={`/genre/${genre}`}
                       className="bg-slate-500 text-white px-3 py-1 rounded-full text-xs"
                     >
                       {genre}
@@ -120,7 +132,8 @@ export default function MangaPage() {
                   <Link
                     key={index}
                     href={`/${ch.link}`}
-                    className="border-2 border-white p-2 rounded-md flex flex-col shadow-sm hover:shadow-md transition hover:bg-gray-700/40 text-yellow-500"
+                    onClick={() => handleClick(ch.link)}
+                    className={clickedLinks.includes(ch.link) ? "border-2 border-white p-2 rounded-md flex flex-col shadow-sm hover:shadow-md transition hover:bg-gray-700/40 text-gray-500" : "border-2 border-white p-2 rounded-md flex flex-col shadow-sm hover:shadow-md transition hover:bg-gray-700/40 text-yellow-500"}
                   >
                     <span className="font-semibold">{ch.chapter}</span>
                     <span className="text-xs text-gray-500">{ch.update}</span>

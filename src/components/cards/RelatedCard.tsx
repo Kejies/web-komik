@@ -30,11 +30,9 @@ export default function RelatedCard({ card }: CardProps) {
           card.map(async (item) => {
             const link = item.link.replace(/^\/+/, "");
             const url = `${process.env.NEXT_PUBLIC_API_URL}/detail/${link}`;
-            console.log("Fetching:", url);
 
             try {
               const res = await fetch(url);
-              console.log("Response Status:", res.status);
 
               if (!res.ok) {
                 console.warn(`HTTP error for ${item.link}: ${res.status}`);

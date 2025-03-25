@@ -24,8 +24,6 @@ export default function NewestCards() {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/terbaru/${currentPage}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log("API Response:", data);
-
         if (data.data && Array.isArray(data.data)) {
           setData(data.data);
           setTotalPages(data.total_pages);
