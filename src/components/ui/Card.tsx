@@ -1,4 +1,4 @@
-import Image from "next/image"
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 interface CardProps {
     link: string;
@@ -11,7 +11,7 @@ export default function Card({link, title, img, chapter, last_update}:CardProps)
     return(
       <Link href={`/komik/${link}`} className="relative flex flex-col shadow shadow-slate-600 border border-slate-600 rounded-lg w-[9rem] overflow-hidden hover:bg-slate-200/10 transition-all">
       <div className="relative w-full h-48 overflow-hidden text-white rounded-md">
-        <Image
+        <img
           src={img}
           alt="card-image"
           width={224}
