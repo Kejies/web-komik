@@ -1,10 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import Image from "next/image";
 import { PaletteIcon } from "lucide-react";
-import manhwa from "@/app/manhwa.png";
-import manhua from "@/app/manhua.png";
-import manga from "@/app/manga.png";
+import manhwa from "@/public/manhwa.png";
+import manhua from "@/public/manhua.png";
+import manga from "@/public/manga.png";
 
 interface CardProps {
     link: string;
@@ -27,17 +26,17 @@ export default function CardV2({ link, title, img, chapter, last_update, type, c
                 </div>
 
             )}
-            {type == "Manhwa" ? (
+            {type === "Manhwa" ? (
                 <div className="absolute top-2 right-2 text-white text-xs px-2 py-1 rounded-full font-bold">
-                    <Image src={manhwa} alt="manhwa" width={20} height={20} />
+                    <img src="/manhwa.png" alt="manhwa" width={20} height={20} />
                 </div>
-            ) : type == "Manga" ? (
+            ) : type === "Manga" ? (
                 <div className="absolute top-2 right-2 text-white text-xs px-2 py-1 rounded-full font-bold">
-                    <Image src={manga} alt="manga" width={25} height={25} />
+                    <img src="/manga.png" alt="manga" width={25} height={25} />
                 </div>
             ) : (
                 <div className="absolute top-2 right-2 text-white text-xs px-2 py-1 rounded-full font-bold">
-                    <Image src={manhua} alt="manhua" width={25} height={25} />
+                    <img src="/manhua.png" alt="manhua" width={25} height={25} />
                 </div>
             )}
 
