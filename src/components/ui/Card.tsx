@@ -1,35 +1,88 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
+import Image from "next/image";
+import { PaletteIcon, Star } from "lucide-react";
+import manhwa from "@/app/manhwa.png";
+import manhua from "@/app/manhua.png";
+import manga from "@/app/manga.png";
+
 interface CardProps {
-    link: string;
-    title: string;
-    img:string;
-    chapter: string;
-    last_update?: string;
-  }
-export default function Card({link, title, img, chapter, last_update}:CardProps){
-    return(
-      <Link href={`/komik/${link}`} className="relative flex flex-col shadow shadow-slate-600 border border-slate-600 rounded-lg w-[9rem] overflow-hidden hover:bg-slate-200/10 transition-all">
-      <div className="relative w-full h-48 overflow-hidden text-white rounded-md">
-        <img
-          src={img}
-          alt="card-image"
-          width={224}
-          height={384}
-          className="w-full h-full object-cover"
-        />
+  link: string;
+  title: string;
+  img: string;
+  chapter?: string;
+  last_update?: string;
+  className?: string;
+  type?: string;
+  colored?: string;
+  ratting?: string;
+}
+
+export default function Card({ link, title, img, chapter, last_update, type, colored, ratting, className = "" }: CardProps) {
+  return (
+    <Link
+      href={`/${link}`}
+      className={`relative bg-neutral-900 rounded-xl overflow-hidden shadow-lg w-44 h-64 transition-transform duration-300 hover:scale-110 hover:shadow-xl ${className}`}
+    >
+      {colored && (
+        <div className="absolute top-2 left-2 bg-yellow-500 text-black text-[10px] px-1 py-0.5 rounded-md font-bold flex items-center gap-1">
+          <PaletteIcon size={12} /> COLOR
+        </div>
+      )}
+      {type == "Manhwa" ? (
+        <div className="absolute top-2 right-2 text-white text-xs px-2 py-1 rounded-full font-bold">
+          <Image src={manhwa} alt="manhwa" width={20} height={20} />
+        </div>
+      ) : type == "Manga" ? (
+        <div className="absolute top-2 right-2 text-white text-xs px-2 py-1 rounded-full font-bold">
+          <Image src={manga} alt="manga" width={25} height={25} />
+        </div>
+      ) : (
+        <div className="absolute top-2 right-2 text-white text-xs px-2 py-1 rounded-full font-bold">
+          <Image src={manhua} alt="manhua" width={25} height={25} />
+        </div>
+      )}
+
+      <div className="w-full h-56">
+        <img src={img} alt={title} className="w-full h-full object-cover" />
       </div>
 
-      <div className="p-2 flex flex-col gap-1 flex-grow">
-        <h6 className="text-gray-200 text-sm font-semibold line-clamp-2 flex-grow">
-          {title}
-        
-        </h6>
-        <p className="flex justify-between text-xs font-light mt-auto">
-          <span className="text-gray-300">{chapter}</span>
-          <span className="text-gray-400">{last_update}</span>
-        </p>
-      </div>
+
+      {last_update ? (
+        <>
+          <div className="absolute bottom-12 left-0 bg-red-500 text-white text-[10px] px-2 py-0.5 font-bold">
+            {chapter}
+          </div>
+          {ratting && (
+            <div className="absolute bottom-12 right-0 bg-red-500 text-white text-[10px] px-2 py-0.5 font-bold">
+              <Star size={12} className="text-yellow-500" fill="currentColor" /> {ratting}
+            </div>
+          )}
+          <div className="absolute bottom-0 w-full text-white text-xs px-2 py-2 font-bold bg-neutral-900 bg-opacity-90">
+            <h3 className="truncate w-full" title={title}>
+              {title}
+            </h3>
+            <div className="text-blue-400 font-medium mt-0.5">{last_update}</div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="absolute bottom-8 left-0 bg-red-500 text-white text-[10px] px-2 py-0.5 font-bold">
+            {chapter}
+          </div>
+          {ratting && (
+            <div className="absolute bottom-8 right-0 bg-blue-500 text-white text-[10px] px-1 py-0.5 rounded-md font-bold flex items-center gap-1">
+              <Star size={12} className="text-yellow-500" fill="currentColor" /> {ratting}
+            </div>
+          )}
+          <div className="absolute bottom-0 w-full text-white text-xs px-2 py-2 font-bold bg-neutral-900 bg-opacity-90">
+            <h3 className="truncate w-full" title={title}>
+              {title}
+            </h3>
+            <div className="text-blue-400 font-medium mt-0.5">{last_update}</div>
+          </div>
+        </>
+      )}
     </Link>
   );
 }

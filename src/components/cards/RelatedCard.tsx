@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import ComponentCard from "../common/ComponentCard";
-import Card from "../ui/Card"; // Pastikan path-nya benar
+import Card from "../ui/Card";
 
 type CardItem = {
   link: string;
@@ -8,6 +8,8 @@ type CardItem = {
   img: string;
   chapter: string;
   last_update: string;
+  colored: string;
+  type: string;
 };
 
 type CardProps = {
@@ -73,15 +75,17 @@ export default function RelatedCard({ card }: CardProps) {
 
   return (
     <ComponentCard title="Related" className="mt-4">
-      <div className="flex gap-2 overflow-x-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-neutral-900 [&::-webkit-scrollbar-thumb]:bg-yellow-500 p-2 whitespace-nowrap snap-x snap-mandatory scrollbar-hide lg:grid lg:grid-cols-4 lg:w-full">
+      <div className="flex overflow-x-auto whitespace-nowrap snap-x snap-mandatory [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-neutral-900 [&::-webkit-scrollbar-thumb]:bg-blue-500 scrollbar-hide flex-nowrap gap-4 lg:gap-5">
         {updatedCard.map((item) => (
-          <div key={item.link} className="snap-start shrink-0 w-full sm:w-[50%] md:w-[40%] lg:w-auto">
+          <div key={item.link} className="snap-start shrink-0 w-full sm:w-[50%] md:w-[40%] lg:w-auto mb-4">
             <Card
               title={item.title || ""}
               chapter={item.chapter || ""}
-              link={item.link || ""}
+              link={`komik/${item.link}` || ""}
               img={item.img || ""}
               last_update={item.last_update.replace(/\s*yang/, "") || ""}
+              colored={item.colored}
+              type={item.type}
             />
           </div>
         ))}

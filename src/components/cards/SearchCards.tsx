@@ -1,18 +1,23 @@
 "use client";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState, useMemo } from "react";
-import Card from "@/components/ui/Card";
 import ComponentCard from "@/components/common/ComponentCard";
+import Card from "../ui/Card";
 
 type CardData = {
   url: string;
   title: string;
   chapter: string;
-  image: string;
+  img: string;
   last_update: string;
+  colored: string;
+  type: string;
 };
+interface props {
+  className?: string;
+}
 
-export default function SearchCard() {
+export default function SearchCard({ className = "" }: props) {
   const searchParams = useSearchParams();
   const query = searchParams.get("s") || "";
 
@@ -29,11 +34,11 @@ export default function SearchCard() {
     }
 
     setIsLoading(true);
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/search/${encodeURIComponent(validQuery)}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/${encodeURIComponent(validQuery)}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.data && Array.isArray(data.data)) {
-          setResults(data.data);
+          setResults([...data.data.flat()]);
         } else {
           setResults([]);
           console.error("Unexpected API structure:", data);
@@ -47,7 +52,7 @@ export default function SearchCard() {
   }, [validQuery]);
 
   return (
-    <ComponentCard title={`Hasil Pencarian: ${validQuery}`} className="mt-2">
+    <ComponentCard title={`Hasil Pencarian: ${validQuery}`} className={className}>
       <div className="container mx-auto p-4">
         {isLoading ? (
           <div className="flex justify-center items-center h-40">
@@ -57,14 +62,16 @@ export default function SearchCard() {
           <p className="text-center text-gray-500">Tidak ada hasil ditemukan.</p>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {results.map((card) => (
+            {results.map((card, index) => (
               <Card
-                key={card.url}
+                key={index}
                 title={card.title}
                 chapter={card.chapter}
                 link={card.url}
-                img={card.image}
+                img={card.img}
                 last_update={card.last_update}
+                colored={card.colored}
+                type={card.type}
               />
             ))}
           </div>

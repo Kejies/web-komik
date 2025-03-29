@@ -21,26 +21,39 @@ export default function MangaPage() {
   const slug = Array.isArray(params.slug) ? params.slug.join("-") : params.slug;
 
   const [getData, setData] = useState<Data | null>(null);
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
     if (!slug) return;
-    
-    setIsLoading(true); 
 
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/content/${slug}`)
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchData = async () => {
+      setIsLoading(true);
+
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/content/${slug}`);
+
+        if (!res.ok) {
+          throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+
+        const data = await res.json();
+
         if (data.data) {
           setData(data.data);
         } else {
           console.error("Unexpected API structure:", data);
         }
-      })
-      .catch((err) => console.error("Fetch error:", err))
-      .finally(() => setIsLoading(false)); 
+      } catch (err) {
+        console.error("Fetch error:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, [slug]);
+
 
   useEffect(() => {
     const handleScroll = () => {

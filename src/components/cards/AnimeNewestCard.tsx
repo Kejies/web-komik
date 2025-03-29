@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import CardV2 from "../ui/CardV2";
+import Card from "../ui/Card";
 import ComponentCard from "../common/ComponentCard";
 
 type CardType = {
@@ -8,15 +8,11 @@ type CardType = {
   title: string;
   jenis: string;
   type: string;
-  chapter: string;
-  last_update: string;
-  img: string;
-  colored: string;
+  episode: string;
+  image: string;
 };
-interface props {
-  className?: string;
-}
-export default function NewestCards({ className = "" }: props) {
+
+export default function AnimeNewestCards() {
   const [getData, setData] = useState<CardType[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -24,7 +20,7 @@ export default function NewestCards({ className = "" }: props) {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/terbaru/${currentPage}`)
+    fetch(`http://localhost:3000/api/anime-terbaru/${currentPage}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.data && Array.isArray(data.data)) {
@@ -35,11 +31,12 @@ export default function NewestCards({ className = "" }: props) {
         }
       })
       .catch((err) => console.error("Fetch error:", err))
-      .finally(() => setIsLoading(false));
+      .finally(() => setIsLoading(false)); 
   }, [currentPage]);
+    console.log(getData)
 
   return (
-    <ComponentCard title="Terbaru" className={className}>
+    <ComponentCard title="Terbaru" className="mt-2">
       {isLoading ? (
         // Loading di tengah
         <div className="flex justify-center items-center h-60">
@@ -50,7 +47,7 @@ export default function NewestCards({ className = "" }: props) {
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {getData.length > 0 ? (
               getData.map((card) => (
-                <CardV2 key={card.link} title={card.title} chapter={card.chapter} link={`komik/${card.link}`} img={card.img} last_update={card.last_update} colored={card.colored} type={card.type} />
+                <Card key={card.link} title={card.title} chapter={card.episode} link={card.link} img={card.image} />
               ))
             ) : (
               <p className="text-center text-gray-500 w-full">Tidak ada data tersedia.</p>
@@ -66,7 +63,7 @@ export default function NewestCards({ className = "" }: props) {
               Previous
             </button>
             <span className="text-white text-sm sm:text-base">
-              Halaman {currentPage} dari {totalPages}
+              Page {currentPage} of {totalPages}
             </span>
             <button
               onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}

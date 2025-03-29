@@ -1,8 +1,7 @@
 "use client";
-import { useParams } from 'next/navigation'
 import { useState, useEffect } from "react";
+import CardV2 from "@/components/ui/CardV2";
 import ComponentCard from "@/components/common/ComponentCard";
-import CardV2 from '@/components/ui/CardV2';
 
 type CardType = {
     link: string;
@@ -15,40 +14,30 @@ type CardType = {
     colored: string;
 };
 
-export default function Genre() {
-    const { slug } = useParams()
+export default function NewestCards() {
     const [getData, setData] = useState<CardType[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
-    const genre = decodeURIComponent(slug?.toString() || "").replace(/\s+/g, "-").toLowerCase();
 
     useEffect(() => {
         setIsLoading(true);
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/genre/${genre}/page/${currentPage}`)
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/manhua/`)
             .then((res) => res.json())
             .then((data) => {
-                if (data.success && Array.isArray(data.data)) {
-                    console.log("Data komik:", data.data);
+                if (data.data && Array.isArray(data.data)) {
                     setData(data.data);
-                    setTotalPages(Number(data.total_pages)); // Pastikan total_pages dalam format angka
+                    setTotalPages(data.total_pages);
                 } else {
-                    console.error("Struktur API tidak sesuai:", data);
-                    setData([]);
-                    setTotalPages(1); // Default ke 1 jika terjadi error
+                    console.error("Unexpected API structure:", data);
                 }
             })
-            .catch((err) => {
-                console.error("Fetch error:", err);
-                setData([]);
-                setTotalPages(1);
-            })
+            .catch((err) => console.error("Fetch error:", err))
             .finally(() => setIsLoading(false));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [genre, currentPage]);
-    const slugTitle = typeof slug === "string" ? slug : "";
+    }, [currentPage]);
+
     return (
-        <ComponentCard title={`${slugTitle.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}`} className="mt-20">
+        <ComponentCard title="Manhua" className="mt-20">
             {isLoading ? (
                 // Loading di tengah
                 <div className="flex justify-center items-center h-60">

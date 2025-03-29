@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
+import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import CardV2 from "../ui/CardV2";
+import Card from "../ui/Card";
 import ComponentCard from "../common/ComponentCard";
 
 type CardType = {
@@ -11,12 +13,10 @@ type CardType = {
   chapter: string;
   last_update: string;
   img: string;
-  colored: string;
 };
-interface props {
-  className?: string;
-}
-export default function NewestCards({ className = "" }: props) {
+
+export default function NewestCards() {
+  const { genre } = useParams();
   const [getData, setData] = useState<CardType[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -24,7 +24,7 @@ export default function NewestCards({ className = "" }: props) {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/terbaru/${currentPage}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/genre/${genre}/page/${currentPage}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.data && Array.isArray(data.data)) {
@@ -35,11 +35,11 @@ export default function NewestCards({ className = "" }: props) {
         }
       })
       .catch((err) => console.error("Fetch error:", err))
-      .finally(() => setIsLoading(false));
+      .finally(() => setIsLoading(false)); 
   }, [currentPage]);
 
   return (
-    <ComponentCard title="Terbaru" className={className}>
+    <ComponentCard title="Terbaru" className="mt-2">
       {isLoading ? (
         // Loading di tengah
         <div className="flex justify-center items-center h-60">
@@ -48,16 +48,16 @@ export default function NewestCards({ className = "" }: props) {
       ) : (
         <>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {getData.length > 0 ? (
-              getData.map((card) => (
-                <CardV2 key={card.link} title={card.title} chapter={card.chapter} link={`komik/${card.link}`} img={card.img} last_update={card.last_update} colored={card.colored} type={card.type} />
+              {getData.length > 0 ? (
+                getData.map((card) => (
+                  <Card key={card.link} title={card.title} chapter={card.chapter} link={`komik/${card.link}`} img={card.img} last_update={card.last_update} />
               ))
             ) : (
               <p className="text-center text-gray-500 w-full">Tidak ada data tersedia.</p>
             )}
           </div>
 
-          <div className="flex flex-wrap justify-center items-center gap-2 mt-4">
+            <div className="flex flex-wrap justify-center items-center gap-2 mt-4">
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}

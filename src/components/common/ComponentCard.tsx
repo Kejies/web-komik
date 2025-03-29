@@ -11,7 +11,7 @@ const ComponentCard: React.FC<ComponentCardProps> = ({
   title = "",
   children,
   className = "",
-  desc= "",
+  desc = "",
 }) => {
   return (
     <div
@@ -21,10 +21,10 @@ const ComponentCard: React.FC<ComponentCardProps> = ({
         {title}
       </h1>
       {desc && (
-          <p className="mt-1 text-sm text-gray-400">
-            {desc}
-          </p>
-        )}
+        <p className="mt-1 text-sm text-gray-400">
+          {desc}
+        </p>
+      )}
 
       <div className="p-4 border-tborder-gray-800 sm:p-6">
         {children}
