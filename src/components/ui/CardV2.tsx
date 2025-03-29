@@ -1,10 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { PaletteIcon } from "lucide-react";
-import manhwa from "@/public/manhwa.png";
-import manhua from "@/public/manhua.png";
-import manga from "@/public/manga.png";
-
 interface CardProps {
     link: string;
     title: string;
