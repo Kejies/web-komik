@@ -20,7 +20,7 @@ export default function AnimeNewestCards() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`http://localhost:3000/api/anime-terbaru/${currentPage}`)
+    fetch(`http://localhost:5000/api/anime-terbaru/${currentPage}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.data && Array.isArray(data.data)) {
@@ -31,12 +31,12 @@ export default function AnimeNewestCards() {
         }
       })
       .catch((err) => console.error("Fetch error:", err))
-      .finally(() => setIsLoading(false)); 
+      .finally(() => setIsLoading(false));
   }, [currentPage]);
-    console.log(getData)
+  console.log(getData)
 
   return (
-    <ComponentCard title="Terbaru" className="mt-2">
+    <ComponentCard title="Terbaru" className="mt-20">
       {isLoading ? (
         // Loading di tengah
         <div className="flex justify-center items-center h-60">
@@ -47,7 +47,7 @@ export default function AnimeNewestCards() {
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {getData.length > 0 ? (
               getData.map((card) => (
-                <Card key={card.link} title={card.title} chapter={card.episode} link={card.link} img={card.image} />
+                <Card key={card.link} title={card.title} chapter={card.episode} link={`nonton/${card.link}`} img={card.image} />
               ))
             ) : (
               <p className="text-center text-gray-500 w-full">Tidak ada data tersedia.</p>
@@ -58,7 +58,7 @@ export default function AnimeNewestCards() {
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
-              className="px-4 py-2 bg-gray-700 text-white rounded disabled:bg-gray-500"
+              className="px-4 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded disabled:bg-gray-500"
             >
               Previous
             </button>
@@ -68,7 +68,7 @@ export default function AnimeNewestCards() {
             <button
               onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
               disabled={currentPage === totalPages}
-              className="px-4 py-2 bg-gray-700 text-white rounded disabled:bg-gray-500"
+              className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800 disabled:bg-gray-500"
             >
               Next
             </button>

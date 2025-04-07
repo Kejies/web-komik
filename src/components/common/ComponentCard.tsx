@@ -15,7 +15,7 @@ const ComponentCard: React.FC<ComponentCardProps> = ({
 }) => {
   return (
     <div
-      className={`max-w-screen-lg mx-auto px-4 w-full rounded-2xl border border-gray-800 bg-black/[0.03] ${className}`}
+      className={`max-w-screen-lg mx-auto w-full rounded-2xl border border-gray-800 bg-black/[0.03] ${className}`}
     >
       <h1 className="text-gray-200 text-xl font-semibold p-4">
         {title}

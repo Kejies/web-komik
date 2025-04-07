@@ -66,13 +66,13 @@ export default function MangaPage() {
 
   const handlePrevious = () => {
     if (getData?.prev_chapter) {
-      router.push(`/${getData.prev_chapter.replace("/", "")}`);
+      router.push(`/baca/${getData.prev_chapter.replace("/", "")}`);
     }
   };
 
   const handleNext = () => {
     if (getData?.next_chapter) {
-      router.push(`/${getData.next_chapter.replace("/", "")}`);
+      router.push(`/baca/${getData.next_chapter.replace("/", "")}`);
     }
   };
 

@@ -3,7 +3,7 @@ import { Search, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
-export default function Navbar() {
+export default function NavbarAnime() {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [search, setSearch] = useState("");
 
@@ -18,13 +18,13 @@ export default function Navbar() {
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="text-xl font-bold tracking-wide hover:opacity-80 transition">
-          Cihuy Komik
+          Cihuy Anime
         </Link>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex gap-6 text-lg font-medium">
           <Link href="/" className="hover:text-gray-200 transition">Home</Link>
-          <Link href="/anime" className="hover:text-gray-200 transition">Anime</Link>
+          <Link href="/" className="hover:text-gray-200 transition">Komik</Link>
           <Link href="/manhua" className="hover:text-gray-200 transition">Manhua</Link>
           <Link href="/bookmark" className="hover:text-gray-200 transition">Bookmark</Link>
           <Link href="/genre" className="hover:text-gray-200 transition">Genre</Link>
@@ -54,7 +54,7 @@ export default function Navbar() {
       {isMenuOpen && (
         <div className="md:hidden mt-3 flex flex-col items-center bg-blue-500 p-3 rounded-md shadow-lg transition-all">
           <Link href="/" className="py-2 w-full text-center hover:bg-blue-700 rounded-md">Home</Link>
-          <Link href="/anime" className="py-2 w-full text-center hover:bg-blue-700 rounded-md">Anime</Link>
+          <Link href="/" className="py-2 w-full text-center hover:bg-blue-700 rounded-md">Komik</Link>
           <Link href="/manhua" className="py-2 w-full text-center hover:bg-blue-700 rounded-md">Manhua</Link>
           <Link href="/bookmark" className="py-2 w-full text-center hover:bg-blue-700 rounded-md">Bookmark</Link>
           <Link href="/genre" className="py-2 w-full text-center hover:bg-blue-700 rounded-md">Genre</Link>

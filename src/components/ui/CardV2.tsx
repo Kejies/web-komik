@@ -9,12 +9,13 @@ interface CardProps {
     last_update?: string;
     type?: string;
     colored?: string;
+    className?: string;
 }
-export default function CardV2({ link, title, img, chapter, last_update, type, colored }: CardProps) {
+export default function CardV2({ link, title, img, chapter, last_update, type, colored, className }: CardProps) {
     return (
         <Link
             href={`/${link}`}
-            className="relative bg-neutral-900 rounded-xl overflow-hidden shadow-lg w-44 transition-transform duration-300 hover:scale-105 hover:shadow-xl"
+            className={`relative bg-neutral-900 rounded-xl overflow-hidden shadow-lg w-44 transition-transform duration-300 hover:scale-105 hover:shadow-xl + ${className}`}
         >
             {colored !== "" && (
                 <div className="absolute top-2 left-2 bg-yellow-500 text-black text-[10px] px-1 py-0.5 rounded-md font-bold flex items-center gap-1">

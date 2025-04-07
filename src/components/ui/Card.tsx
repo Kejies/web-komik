@@ -16,7 +16,7 @@ interface CardProps {
 export default function Card({ link, title, img, chapter, last_update, type, colored, ratting, className = "" }: CardProps) {
   return (
     <Link
-      href={`/${link}`}
+      href={`${link}`}
       className={`relative bg-neutral-900 rounded-xl overflow-hidden shadow-lg w-44 h-64 transition-transform duration-300 hover:scale-110 hover:shadow-xl ${className}`}
     >
       {colored && (
@@ -32,11 +32,11 @@ export default function Card({ link, title, img, chapter, last_update, type, col
         <div className="absolute top-2 right-2 text-white text-xs px-2 py-1 rounded-full font-bold">
           <img src="/manga.png" alt="manga" width={25} height={25} />
         </div>
-      ) : (
+      ) : type === "Manhua" ? (
         <div className="absolute top-2 right-2 text-white text-xs px-2 py-1 rounded-full font-bold">
           <img src="/manhua.png" alt="manhua" width={25} height={25} />
         </div>
-      )}
+      ) : ""}
 
 
       <div className="w-full h-56">

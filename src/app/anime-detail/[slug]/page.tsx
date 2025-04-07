@@ -8,55 +8,56 @@ import { Bookmark } from "lucide-react";
 import StarRating from "@/components/rating";
 import RelatedCard from "@/components/cards/RelatedCard";
 
-type Chapter = {
+type episodeFL = {
   link: string;
-  chapter: string;
-  update: string;
+  episode: string;
+  title: string;
+};
+type episodeList = {
+  link: string;
+  episode: string;
+  title: string;
+  epsupdate: string;
 };
 
-type RelatedData = {
+type relatedAnime = {
   link: string;
-  img: string;
+  image: string;
   title: string;
-  subtitle: string;
-  type: string;
+  category: string;
+  ratting: string;
   jenis: string;
   colored: string;
-  last_update: string;
-  chapter: string;
+  epsupdate: string;
 }[];
 
-type FirstChapter = {
+type genre = {
   title: string;
-  chapter_url: string;
+  link: string;
 };
 
-type LastChapter = {
-  title: string;
-  chapter_url: string;
-};
 
 type Data = {
   title: string;
-  chapter_list: Chapter[];
+  episodeList: episodeList[];
+  episodeFL: episodeFL[];
   sinopsis: string;
   status: string;
-  img: string;
+  image: string;
   type: string;
   released: string;
-  related: RelatedData;
-  author: string;
-  artist: string;
+  relatedAnime: relatedAnime[];
+  duration: string;
+  studios: string;
   ratting: string;
-  first_chapter: FirstChapter;
-  last_chapter: LastChapter;
-  genre: string[];
+  epsupdate: string;
+  genre: genre;
   href: string;
 };
 type Bookmark = {
   href: string;
   title: string;
-  img: string;
+  image: string;
   status: string;
   ratting: string;
   sinopsis: string;
@@ -67,8 +68,9 @@ export default function MangaPage() {
   const rating = parseInt(getData?.ratting || "0", 10);
   const [clickedLinks, setClickedLinks] = useState<string[]>([]);
   const [bookMarks, setBookMarks] = useState<Bookmark[]>([]);
+  console.log(`http://localhost:5000/api/detail/${slug}`)
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/detail/${slug}`)
+    fetch(`http://localhost:5000/api/detail/${slug}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.data) {
@@ -113,10 +115,9 @@ export default function MangaPage() {
       {getData ? (
         <ComponentCard title={getData.title} className="mt-20">
           <div className="flex flex-col md:flex-row gap-6">
-            {/* Cover Image */}
             <div className="flex flex-col items-center">
               <img
-                src={getData.img}
+                src={getData.image}
                 alt={getData.title}
                 className="rounded-lg w-60 h-auto shadow-md"
               />
@@ -137,23 +138,21 @@ export default function MangaPage() {
               <p className="mb-3 text-lg font-semibold">Sinopsis</p>
               <p className="text-gray-400 mb-4">{getData.sinopsis}</p>
 
-              <p><strong>Status:</strong> {getData.status}</p>
-              <p><strong>Tipe:</strong> {getData.type}</p>
+              <p><strong>Duration:</strong> {getData.duration}</p>
+              <p><strong>Studios:</strong> {getData.studios}</p>
               <p><strong>Rilis:</strong> {getData.released}</p>
-              <p><strong>Author:</strong> {getData.author}</p>
-              <p><strong>Artist:</strong> {getData.artist}</p>
 
               {/* Genre */}
               <div>
                 <p className="font-semibold">Genre:</p>
                 <div className="flex flex-wrap gap-2 mt-2">
-                  {getData.genre.map((genre, index) => (
+                  {getData.genre.map((gen, index) => (
                     <Link
                       key={index}
-                      href={`/genre/${genre}`}
+                      href={`/genre/${gen.link}`}
                       className="bg-neutral-700 text-white px-3 py-1 rounded-md text-xs hover:text-blue-700"
                     >
-                      {genre}
+                      {gen.title}
                     </Link>
                   ))}
                 </div>
@@ -163,46 +162,47 @@ export default function MangaPage() {
 
           <ComponentCard title="Chapters" className="mt-5 h-[35rem] lg:h-[34rem] flex flex-col">
             <div className="grid grid-cols-2 gap-4 mb-2">
-              <Link
-                href={`/baca/${getData.first_chapter.chapter_url}`}
-                className="flex flex-col items-center w-full p-3 text-lg rounded-md shadow-sm hover:shadow-md transition hover:bg-gray-700/40 bg-blue-500 text-gray-200"
-              >
-                <span>First Chapter</span>
-                <span className="text-sm">{getData.first_chapter.title}</span>
-              </Link>
-              <Link
-                href={`/baca/${getData.last_chapter.chapter_url}`}
-                className="flex flex-col w-full p-3 items-center text-lg rounded-md shadow-sm hover:shadow-md transition hover:bg-gray-700/40 bg-blue-500 text-gray-200"
-              >
-                <span>Last Chapter</span>
-                <span className="text-sm">{getData.last_chapter.title}</span>
-              </Link>
+              {getData.episodeFL.map((eps, index) => (
+
+                <Link
+                  key={index}
+                  href={`/nonton/${eps.link}`}
+                  className="flex flex-col items-center w-full p-3 text-lg rounded-md shadow-sm hover:shadow-md transition hover:bg-gray-700/40 bg-blue-500 text-gray-200"
+                >
+                  <span>{eps.title}</span>
+                  <span className="text-sm">{eps.episode}</span>
+                </Link>
+              ))}
+
             </div>
 
-            <div className="overflow-y-auto max-h-[22rem] p-2 ">
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                {getData.chapter_list.map((ch, index) => (
+            <div className="overflow-y-auto max-h-[22rem] p-2">
+              <div className="divide-y divide-gray-700 border border-gray-700 rounded-md">
+                {getData.episodeList.map((eps, index) => (
                   <Link
                     key={index}
-                    href={`/baca/${ch.link}`}
-                    onClick={() => handleClick(ch.link)}
-                    className={clickedLinks.includes(ch.link) ? "border-2 border-white p-2 rounded-md flex flex-col shadow-sm hover:shadow-md transition hover:bg-gray-700/40 text-gray-500" : "border-2 border-white p-2 rounded-md flex flex-col shadow-sm hover:shadow-md transition hover:bg-gray-700/40 text-blue-500"}
+                    href={`/nonton/${eps.link}`}
+                    onClick={() => handleClick(eps.link)}
+                    className={`flex items-center justify-between px-4 py-3 text-sm md:text-base transition-colors
+          ${clickedLinks.includes(eps.link)
+                        ? "bg-gray-800 text-gray-400"
+                        : "hover:bg-gray-700/50 text-white"}
+        `}
                   >
-                    <span className="font-semibold">{ch.chapter}</span>
-                    <span className="text-xs text-gray-500">{ch.update}</span>
+                    <span className="font-medium">{eps.title}</span>
+                    <span className="text-xs text-gray-500">{eps.epsupdate}</span>
                   </Link>
                 ))}
               </div>
             </div>
+
           </ComponentCard>
-          <RelatedCard card={getData.related.map((item) => ({
-            link: `/${item.link}`,
+          <RelatedCard card={getData.relatedAnime.map((item) => ({
+            link: `anime-detail${item.link}`,
             title: item.title,
-            img: item.img,
-            colored: item.colored,
-            type: item.type,
-            last_update: item.last_update,
-            chapter: item.chapter,
+            img: item.image,
+            last_update: item.category,
+            rating: item.ratting,
           }))} />
         </ComponentCard>
       ) : (

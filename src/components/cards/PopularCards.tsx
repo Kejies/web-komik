@@ -56,7 +56,7 @@ export default function PopularCards({ className = "" }: props) {
                 colored={card.colored}
                 type={card.type}
                 ratting={card.ratting}
-                className="snap-start shrink-0 w-full sm:w-[50%] md:w-[40%] lg:w-auto mb-5"
+                className="snap-start shrink-0 sm:w-[50%] md:w-[40%] lg:w-auto mb-5"
               />
             ))
           ) : (

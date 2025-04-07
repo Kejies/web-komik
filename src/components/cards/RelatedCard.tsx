@@ -77,11 +77,11 @@ export default function RelatedCard({ card }: CardProps) {
     <ComponentCard title="Related" className="mt-4">
       <div className="flex overflow-x-auto whitespace-nowrap snap-x snap-mandatory [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-neutral-900 [&::-webkit-scrollbar-thumb]:bg-blue-500 scrollbar-hide flex-nowrap gap-4 lg:gap-5">
         {updatedCard.map((item) => (
-          <div key={item.link} className="snap-start shrink-0 w-full sm:w-[50%] md:w-[40%] lg:w-auto mb-4">
+          <div key={item.link} className="snap-start shrink-0 sm:w-[50%] md:w-[40%] lg:w-auto mb-4">
             <Card
               title={item.title || ""}
               chapter={item.chapter || ""}
-              link={`komik/${item.link}` || ""}
+              link={`/${item.link}` || ""}
               img={item.img || ""}
               last_update={item.last_update.replace(/\s*yang/, "") || ""}
               colored={item.colored}
