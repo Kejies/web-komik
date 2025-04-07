@@ -34,7 +34,7 @@ export default function SearchCard({ className = "" }: props) {
     }
 
     setIsLoading(true);
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/${encodeURIComponent(validQuery)}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/search/${encodeURIComponent(validQuery)}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.data && Array.isArray(data.data)) {
