@@ -5,7 +5,7 @@ import ComponentCard from "@/components/common/ComponentCard";
 import Card from "../ui/Card";
 
 type CardData = {
-  url: string;
+  link: string;
   title: string;
   chapter: string;
   img: string;
@@ -67,7 +67,7 @@ export default function SearchCard({ className = "" }: props) {
                 key={index}
                 title={card.title}
                 chapter={card.chapter}
-                link={card.url}
+                link={card.link}
                 img={card.img}
                 last_update={card.last_update}
                 colored={card.colored}
