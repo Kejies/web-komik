@@ -19,7 +19,7 @@ export default function MangaPage() {
   const params = useParams();
   const router = useRouter();
   const slug = Array.isArray(params.slug) ? params.slug.join("-") : params.slug;
-
+  const [clickedLinks, setClickedLinks] = useState<string[]>([]);
   const [getData, setData] = useState<Data | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showButton, setShowButton] = useState(false);
@@ -50,10 +50,18 @@ export default function MangaPage() {
         setIsLoading(false);
       }
     };
-
+    const storedLinks = JSON.parse(localStorage.getItem("clickedLinks") || "[]");
+    setClickedLinks(storedLinks);
     fetchData();
   }, [slug]);
 
+  const handleClick = (href: string) => {
+    if (!clickedLinks.includes(href)) {
+      const newClickedLinks = [...clickedLinks, href];
+      setClickedLinks(newClickedLinks);
+      localStorage.setItem("clickedLinks", JSON.stringify(newClickedLinks));
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,12 +74,14 @@ export default function MangaPage() {
 
   const handlePrevious = () => {
     if (getData?.prev_chapter) {
+      handleClick(getData.prev_chapter)
       router.push(`/baca/${getData.prev_chapter.replace("/", "")}`);
     }
   };
 
   const handleNext = () => {
     if (getData?.next_chapter) {
+      handleClick(getData.next_chapter)
       router.push(`/baca/${getData.next_chapter.replace("/", "")}`);
     }
   };
@@ -157,7 +167,7 @@ export default function MangaPage() {
           {showButton && (
             <button
               onClick={scrollToTop}
-              className="fixed bottom-6 right-6 p-3 bg-yellow-400 text-black rounded-full shadow-lg hover:bg-yellow-500 transition-all"
+              className="fixed bottom-6 right-6 p-3 bg-blue-500 text-black rounded-full shadow-lg hover:bg-blue-600 transition-all"
             >
               <ArrowUp size={24} />
             </button>
