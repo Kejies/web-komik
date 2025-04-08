@@ -6,7 +6,6 @@ import ComponentCard from "@/components/common/ComponentCard";
 import Link from "next/link";
 import { Bookmark } from "lucide-react";
 import StarRating from "@/components/rating";
-import RelatedCard from "@/components/cards/RelatedCard";
 
 type episodeFL = {
     link: string;
