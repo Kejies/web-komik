@@ -82,7 +82,10 @@ export default function MangaPage() {
             <p className="text-white text-base leading-relaxed">
               Selamat membaca komik <span className="font-semibold">{getData.title}</span> bahasa Indonesia. Saksikan kelanjutan cerita yang membawa berbagai nuansa dan pengalaman membaca yang seru.
             </p>
-            <FavButton link_chapter={slug} daftar_chapter={getData.daftar_chapter} />
+            <FavButton
+              link_chapter={slug ?? ""}
+              daftar_chapter={getData.daftar_chapter ?? ""}
+            />
           </div>
           <ChapterPagination prev_chapter={getData.prev_chapter} daftar_chapter={getData.daftar_chapter} next_chapter={getData.next_chapter} />
 
