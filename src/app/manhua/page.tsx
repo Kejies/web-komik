@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import CardV2 from "@/components/ui/CardV2";
 import ComponentCard from "@/components/common/ComponentCard";
+import Pagination from "@/components/pagination";
 
 type CardType = {
     link: string;
@@ -55,25 +56,7 @@ export default function NewestCards() {
                         )}
                     </div>
 
-                    <div className="flex flex-wrap justify-center items-center gap-2 mt-4">
-                        <button
-                            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                            disabled={currentPage === 1}
-                            className="px-4 py-2 bg-gray-700 text-white rounded disabled:bg-gray-500"
-                        >
-                            Previous
-                        </button>
-                        <span className="text-white text-sm sm:text-base">
-                            Halaman {currentPage} dari {totalPages}
-                        </span>
-                        <button
-                            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                            disabled={currentPage === totalPages}
-                            className="px-4 py-2 bg-gray-700 text-white rounded disabled:bg-gray-500"
-                        >
-                            Next
-                        </button>
-                    </div>
+                    <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={(page) => setCurrentPage(page)} />
                 </>
             )}
         </ComponentCard>

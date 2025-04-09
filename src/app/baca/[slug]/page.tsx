@@ -167,7 +167,7 @@ export default function MangaPage() {
           {showButton && (
             <button
               onClick={scrollToTop}
-              className="fixed bottom-6 right-6 p-3 bg-blue-500 text-black rounded-full shadow-lg hover:bg-blue-600 transition-all"
+              className="fixed bottom-6 right-6 p-3 bg-blue-500 text-gray-200 rounded-full shadow-lg hover:bg-blue-600 transition-all"
             >
               <ArrowUp size={24} />
             </button>
