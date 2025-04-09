@@ -100,7 +100,7 @@ export default function MangaPage() {
   return (
     <>
       {getData && (
-        <ComponentCard title={getData.title}>
+        <ComponentCard title={getData.title} className="mt-20">
           {/* Navigasi Chapter */}
           <div className="flex flex-wrap justify-center items-center gap-2 mb-4">
             <button
@@ -173,6 +173,7 @@ export default function MangaPage() {
             </button>
           )}
         </ComponentCard>
+
       )}
     </>
   );

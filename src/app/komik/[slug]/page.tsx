@@ -179,14 +179,18 @@ export default function MangaPage() {
               </Link>
             </div>
 
-            <div className="overflow-y-auto max-h-[22rem] p-2 ">
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            <div className="overflow-y-auto max-h-[22rem] p-2">
+              <div className="divide-y divide-gray-700 border border-gray-700 rounded-md">
                 {getData.chapter_list.map((ch, index) => (
                   <Link
                     key={index}
                     href={`/baca/${ch.link}`}
                     onClick={() => handleClick(ch.link)}
-                    className={clickedLinks.includes(ch.link) ? "border-2 border-white p-2 rounded-md flex flex-col shadow-sm hover:shadow-md transition hover:bg-gray-700/40 text-gray-500" : "border-2 border-white p-2 rounded-md flex flex-col shadow-sm hover:shadow-md transition hover:bg-gray-700/40 text-blue-500"}
+                    className={`flex items-center justify-between px-4 py-3 text-sm md:text-base transition-colors
+                      ${clickedLinks.includes(ch.link)
+                        ? "bg-gray-800 text-gray-400"
+                        : "hover:bg-gray-700/50 text-white"}
+                    `}
                   >
                     <span className="font-semibold">{ch.chapter}</span>
                     <span className="text-xs text-gray-500">{ch.update}</span>
