@@ -17,7 +17,7 @@ export default function Navbar() {
 
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "Anime", href: "/anime" },
+    // { name: "Anime", href: "/anime" },
     { name: "Manga", href: "/manga" },
     { name: "Manhua", href: "/manhua" },
     { name: "Bookmark", href: "/bookmark" },
