@@ -84,6 +84,11 @@ export default function MangaPage() {
     const validBookmarks: Bookmark[] = storedBookmarks.filter((item: Bookmark | null) => item !== null);
     setBookMarks(validBookmarks);
   }, [slug]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredChapters = (getData?.chapter_list || []).filter((ch) =>
+    ch.chapter.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleClick = (href: string) => {
     if (!clickedLinks.includes(href)) {
@@ -179,25 +184,48 @@ export default function MangaPage() {
               </Link>
             </div>
 
-            <div className="overflow-y-auto max-h-[22rem] p-2">
-              <div className="divide-y divide-gray-700 border border-gray-700 rounded-md">
-                {getData.chapter_list.map((ch, index) => (
-                  <Link
-                    key={index}
-                    href={`/baca/${ch.link}`}
-                    onClick={() => handleClick(ch.link)}
-                    className={`flex items-center justify-between px-4 py-3 text-sm md:text-base transition-colors
-                      ${clickedLinks.includes(ch.link)
-                        ? "bg-gray-700/50 text-gray-400 hover:bg-gray-800/50"
-                        : "hover:bg-gray-900/50 text-white"}
-                    `}
-                  >
-                    <span className="font-semibold">{ch.chapter}</span>
-                    <span className="text-xs text-gray-500">{ch.update}</span>
-                  </Link>
-                ))}
+            <div>
+              <input
+                type="text"
+                placeholder="Cari chapter..."
+                className="w-full mb-2 p-2 text-sm md:text-base rounded-md border border-gray-700 bg-base text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-600"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+
+              {/* Daftar Chapter */}
+              <div
+                className="overflow-y-auto max-h-[20rem] p-2
+    [&::-webkit-scrollbar]:w-2
+    [&::-webkit-scrollbar-track]:rounded-full
+    [&::-webkit-scrollbar-thumb]:rounded-full
+    [&::-webkit-scrollbar-track]:bg-neutral-900
+    [&::-webkit-scrollbar-thumb]:bg-blue-500"
+              >
+                <div className="divide-y divide-gray-700 border border-gray-700 rounded-md">
+                  {filteredChapters.map((ch, index) => (
+                    <Link
+                      key={index}
+                      href={`/baca/${ch.link}`}
+                      onClick={() => handleClick(ch.link)}
+                      className={`flex items-center justify-between px-4 py-3 text-sm md:text-base transition-colors
+            ${clickedLinks.includes(ch.link)
+                          ? "bg-gray-700/50 text-gray-400 hover:bg-gray-800/50"
+                          : "hover:bg-gray-900/50 text-white"
+                        }
+          `}
+                    >
+                      <span className="font-semibold">{ch.chapter}</span>
+                      <span className="text-xs text-gray-500">{ch.update}</span>
+                    </Link>
+                  ))}
+                  {filteredChapters.length === 0 && (
+                    <div className="p-4 text-gray-500 text-center">Chapter tidak ditemukan.</div>
+                  )}
+                </div>
               </div>
             </div>
+
           </ComponentCard>
           <RelatedCard card={getData.related.map((item) => ({
             link: `/${item.link}`,
