@@ -1,10 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ComponentCard from "@/components/common/ComponentCard";
-import { ArrowUp, Grip } from "lucide-react";
-import Link from "next/link";
+import { ArrowUp } from "lucide-react";
+import ChapterPagination from "@/components/ChapterPagination";
+import FavButton from "@/components/FavButton";
 
 type Data = {
   title: string;
@@ -17,9 +18,7 @@ type Data = {
 
 export default function MangaPage() {
   const params = useParams();
-  const router = useRouter();
   const slug = Array.isArray(params.slug) ? params.slug.join("-") : params.slug;
-  const [clickedLinks, setClickedLinks] = useState<string[]>([]);
   const [getData, setData] = useState<Data | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showButton, setShowButton] = useState(false);
@@ -50,18 +49,9 @@ export default function MangaPage() {
         setIsLoading(false);
       }
     };
-    const storedLinks = JSON.parse(localStorage.getItem("clickedLinks") || "[]");
-    setClickedLinks(storedLinks);
     fetchData();
   }, [slug]);
 
-  const handleClick = (href: string) => {
-    if (!clickedLinks.includes(href)) {
-      const newClickedLinks = [...clickedLinks, href];
-      setClickedLinks(newClickedLinks);
-      localStorage.setItem("clickedLinks", JSON.stringify(newClickedLinks));
-    }
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -72,19 +62,6 @@ export default function MangaPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handlePrevious = () => {
-    if (getData?.prev_chapter) {
-      handleClick(getData.prev_chapter)
-      router.push(`/baca/${getData.prev_chapter.replace("/", "")}`);
-    }
-  };
-
-  const handleNext = () => {
-    if (getData?.next_chapter) {
-      handleClick(getData.next_chapter)
-      router.push(`/baca/${getData.next_chapter.replace("/", "")}`);
-    }
-  };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -100,32 +77,14 @@ export default function MangaPage() {
   return (
     <>
       {getData && (
-        <ComponentCard title={getData.title} className="mt-20">
-          {/* Navigasi Chapter */}
-          <div className="flex flex-wrap justify-center items-center gap-2 mb-4">
-            <button
-              onClick={handlePrevious}
-              disabled={!getData.prev_chapter}
-              className="px-4 py-2 bg-gray-700 text-white rounded disabled:text-gray-500 hover:bg-gray-800"
-            >
-              « Chapter Sebelumnya
-            </button>
-            <Link
-              href={`/komik/${getData.daftar_chapter}`}
-              className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800 flex gap-0.5 items-center"
-            >
-              <Grip size={24} />
-              Daftar Chapter
-            </Link>
-            <button
-              onClick={handleNext}
-              disabled={!getData.next_chapter}
-              className="px-4 py-2 bg-gray-700 text-white rounded disabled:text-gray-500 hover:bg-gray-800"
-            >
-              Chapter Selanjutnya »
-            </button>
+        <ComponentCard className="mt-20" titleChapter={getData.title}>
+          <div className="bg-base ring-slate-900 ring-2 rounded-xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <p className="text-white text-base leading-relaxed">
+              Selamat membaca komik <span className="font-semibold">{getData.title}</span> bahasa Indonesia. Saksikan kelanjutan cerita yang membawa berbagai nuansa dan pengalaman membaca yang seru.
+            </p>
+            <FavButton link_chapter={slug} daftar_chapter={getData.daftar_chapter} />
           </div>
-
+          <ChapterPagination prev_chapter={getData.prev_chapter} daftar_chapter={getData.daftar_chapter} next_chapter={getData.next_chapter} />
 
           <div className="flex flex-col items-center">
             {getData.content.map((content, index) => (
@@ -139,31 +98,7 @@ export default function MangaPage() {
               />
             ))}
           </div>
-
-          <div className="flex flex-wrap justify-center items-center gap-2 mt-4">
-            <button
-              onClick={handlePrevious}
-              disabled={!getData.prev_chapter}
-              className="px-4 py-2 bg-gray-700 text-white rounded disabled:text-gray-500 hover:bg-gray-800"
-            >
-              « Chapter Sebelumnya
-            </button>
-            <Link
-              href={`/komik/${getData.daftar_chapter}`}
-              className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-800 flex gap-0.5 items-center"
-            >
-              <Grip size={24} />
-              Daftar Chapter
-            </Link>
-            <button
-              onClick={handleNext}
-              disabled={!getData.next_chapter}
-              className="px-4 py-2 bg-gray-700 text-white rounded disabled:text-gray-500 hover:bg-gray-800"
-            >
-              Chapter Selanjutnya »
-            </button>
-          </div>
-
+          <ChapterPagination prev_chapter={getData.prev_chapter} daftar_chapter={getData.daftar_chapter} next_chapter={getData.next_chapter} />
           {showButton && (
             <button
               onClick={scrollToTop}

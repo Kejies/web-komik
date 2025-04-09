@@ -22,6 +22,7 @@ export default function Navbar() {
     { name: "Manhua", href: "/manhua" },
     { name: "Bookmark", href: "/bookmark" },
     { name: "Genre", href: "/genre" },
+    // { name: "Fav Eps", href: "/favepisode" },
   ];
 
   const linkStyle = (href: string) =>

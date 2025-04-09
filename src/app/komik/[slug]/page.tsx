@@ -188,8 +188,8 @@ export default function MangaPage() {
                     onClick={() => handleClick(ch.link)}
                     className={`flex items-center justify-between px-4 py-3 text-sm md:text-base transition-colors
                       ${clickedLinks.includes(ch.link)
-                        ? "bg-gray-800 text-gray-400"
-                        : "hover:bg-gray-700/50 text-white"}
+                        ? "bg-gray-700/50 text-gray-400 hover:bg-gray-800/50"
+                        : "hover:bg-gray-900/50 text-white"}
                     `}
                   >
                     <span className="font-semibold">{ch.chapter}</span>

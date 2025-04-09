@@ -8,7 +8,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "komikindo2.com",
+        hostname: "komikindo3.com",
       },
     ],
   },

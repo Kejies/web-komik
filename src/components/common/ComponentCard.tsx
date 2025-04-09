@@ -1,7 +1,8 @@
 import React from "react";
 
 interface ComponentCardProps {
-  title: string;
+  title?: string;
+  titleChapter?: string;
   children: React.ReactNode;
   className?: string;
   desc?: string;
@@ -9,6 +10,7 @@ interface ComponentCardProps {
 
 const ComponentCard: React.FC<ComponentCardProps> = ({
   title = "",
+  titleChapter = "",
   children,
   className = "",
   desc = "",
@@ -20,6 +22,11 @@ const ComponentCard: React.FC<ComponentCardProps> = ({
       <h1 className="text-gray-200 text-xl font-semibold p-4">
         {title}
       </h1>
+      {titleChapter && (
+        <h1 className="text-gray-200 text-xl font-semibold text-center">
+          {titleChapter}
+        </h1>
+      )}
       {desc && (
         <p className="mt-1 text-sm text-gray-400">
           {desc}
